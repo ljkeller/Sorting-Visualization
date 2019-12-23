@@ -49,6 +49,31 @@ def merge_sort(graph, boxes, xs):
 
         unit *= 2
 
+def quick_sort(graph, boxes, arr, left, right):
+    if left >= right:
+        return
+
+    p = partition(arr, left, right)
+    draw_boxes(graph, boxes, arr)
+    window.read(100)
+    quick_sort(graph, boxes, arr, left, p-1)
+    quick_sort(graph, boxes, arr, p+1, right)
+
+def partition(arr, left, right):
+    pivot = arr[left]
+    i, j = left + 1, right
+    while True: # consider even or odd length lists
+        while i <= j and arr[i] <= pivot:
+            i += 1
+        while i <= j and arr[j] >= pivot:
+            j -= 1
+        if i <= j:
+            arr[j], arr[i] = arr[i], arr[j]
+        else:
+            break
+    arr[left], arr[j] = arr[j], arr[left] # swap pivot in
+    return j
+
 
 
 def draw_boxes(graph, rectangles, elements):
@@ -128,6 +153,9 @@ while True:
         generated = new_dataset()
     elif event == 'Merge Sort':
         merge_sort(graph, boxes, generated)
+        generated = new_dataset()
+    elif event == 'Quick Sort':
+        quick_sort(graph, boxes, generated, 0, NUM_ELEMENTS - 1)
         generated = new_dataset()
     elif event == 'Generate':
         COUNTER = 0  # reset counter

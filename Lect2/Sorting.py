@@ -27,12 +27,35 @@ def insertion_sort(arr: list):
             i-=1
         arr[i+1] = insert
 
+def quick_sort(arr, left, right):
+    if left >= right:
+        return
+
+    p = partition(arr, left, right)
+    quick_sort(arr, left, p-1)
+    quick_sort(arr, p+1, right)
+
+def partition(arr, left, right):
+    pivot = arr[left]
+    i, j = left + 1, right
+    while True: # consider even or odd length lists
+        while i <= j and arr[i] <= pivot:
+            i += 1
+        while i <= j and arr[j] >= pivot:
+            j -= 1
+        if i <= j:
+            arr[j], arr[i] = arr[i], arr[j]
+        else:
+            break
+    arr[left], arr[j] = arr[j], arr[left] # swap pivot in
+    return j
+
 if __name__ == '__main__':
     arr = [3, 11, 15, 2, 12, 9]
     arr2 = [3, 5, 9, 12, 20, 46]
     print("The array contents are: %s", arr)
 
-    insertion_sort(arr)
+    quick_sort(arr, 0, len(arr) - 1)
     print("The array contents are: %s", arr)
 
 

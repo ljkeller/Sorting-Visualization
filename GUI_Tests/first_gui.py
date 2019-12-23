@@ -17,6 +17,39 @@ def clear_graph(graph, graph_elements):
         graph.DeleteFigure(graph_elements[i])
     graph_elements.clear()
 
+def merge_sort(graph, boxes, xs):
+    #This is an interative, in place merge sort. Using an im-place merge
+    # sort allows me to easily manage drawing the rectangles. I DID NOT
+    # WRITE THIS. Credit to:
+    # https://gist.github.com/m00nlight/a076d3995406ca92acd6
+    # In the future, I may write a new helper method to avoid using an
+    # in-place merge, but for now, this works.
+
+    #The likely best solution is using the "generated" array as the "extra"
+    # array space, but the biggest difficulty is graphing all of the blocks
+    # easily
+    unit = 1
+    while unit <= len(xs):
+        h = 0
+        for h in range(0, len(xs), unit * 2):
+            l, r = h, min(len(xs), h + 2 * unit)
+            mid = h + unit
+            # merge xs[h:h + 2 * unit]
+            p, q = l, mid
+            while p < mid and q < r:
+                # use <= for stable merge merge
+                if xs[p] <= xs[q]: p += 1
+                else:
+                    tmp = xs[q]
+                    xs[p + 1: q + 1] = xs[p:q]
+                    xs[p] = tmp
+                    p, mid, q = p + 1, mid + 1, q + 1
+            draw_boxes(graph, boxes, xs)
+            window.read(30)
+
+        unit *= 2
+
+
 
 def draw_boxes(graph, rectangles, elements):
     clear_graph(graph, rectangles)  # clear graph elements & clear their IDs
@@ -92,7 +125,10 @@ while True:
                                                  generated[min_index]
             draw_boxes(graph, boxes, generated)
             window.read(30)
-
+        generated = new_dataset()
+    elif event == 'Merge Sort':
+        merge_sort(graph, boxes, generated)
+        generated = new_dataset()
     elif event == 'Generate':
         COUNTER = 0  # reset counter
         draw_boxes(graph, boxes, generated)

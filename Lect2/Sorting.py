@@ -1,5 +1,6 @@
 import math
 import random
+import heapq
 
 def bubble_sort(arr):
     swap = True
@@ -38,6 +39,14 @@ def quick_sort(arr, left, right):
     quick_sort(arr, left, p-1)
     quick_sort(arr, p+1, right)
 
+def heap_sort(arr):
+    for i in range(len(arr)):
+        arr[0], arr[len(arr) - 1 - i] = arr[len(arr) - 1 - i], arr[0]
+        temp = arr[:len(arr) - 1 - i]
+        heapq._heapify_max(temp)
+        arr[:len(arr) - 1 - i] = temp
+
+
 def partition(arr, left, right):
     pivot = arr[left]
     i, j = left + 1, right
@@ -63,7 +72,6 @@ def digit_ordering(arr, max):
         arr[:] = [leaves for tree in digits_organized for leaves in tree]
         for sublist in digits_organized:
             sublist.clear()
-        print(arr)
     test = [elem for sublist in digits_organized for elem in sublist]
     return digits_organized
 
@@ -71,6 +79,7 @@ if __name__ == '__main__':
     arr = [3, 11, 15, 2, 12, 9]
     arr2 = [3, 5, 9, 12, 20, 46]
     rand_arr = [random.randint(0, 820) for i in range(175)]
+    rand_arr2 = [random.randint(0, 820) for i in range(175)]
 
     #print("The array contents are: %s", arr)
 
@@ -80,6 +89,11 @@ if __name__ == '__main__':
 
     quick_sort(arr, 0, len(arr) - 1)
     #print("The array contents are: %s", arr)
-
+    print(rand_arr2)
+    heapq._heapify_max(rand_arr2)
+    print(rand_arr2.pop())
+    print(rand_arr2)
+    heap_sort(rand_arr2)
+    print("Also, the array: ", rand_arr2)
 
     insertion_sort(arr)

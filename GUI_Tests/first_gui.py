@@ -1,6 +1,6 @@
 import math
 import random
-
+import heapq
 import PySimpleGUI as sg
 
 CANVAS_HEIGHT = 820
@@ -103,7 +103,8 @@ layout = [
     [sg.T('Generate, and select sorting method:'), sg.Button(
         'Generate'), sg.Button('Clear'), sg.Button('Bubble Sort'),
      sg.Button('Insertion Sort'), sg.Button('Selection Sort'), sg.Button(
-        'Quick Sort'), sg.Button('Merge Sort'), sg.Button('Radix Sort')]
+        'Quick Sort'), sg.Button('Merge Sort'), sg.Button('Radix Sort'),
+     sg.Button('Heap Sort')]
 ]
 
 window = sg.Window('Sorting Visualization', layout)
@@ -154,6 +155,17 @@ while True:
             window.read(30)
     elif event == 'Merge Sort':
         merge_sort(graph, boxes, generated)
+
+    elif event == 'Heap Sort':
+        for i in range(NUM_ELEMENTS):
+            generated[0], generated[NUM_ELEMENTS - 1 - i] = generated[
+                NUM_ELEMENTS - 1 - i], generated[0]
+            temp = generated[:NUM_ELEMENTS - 1 - i]
+            heapq._heapify_max(temp)
+            generated[:NUM_ELEMENTS - 1 - i] = temp
+            draw_boxes(graph, boxes, generated)
+            window.read(90)
+
     elif event == 'Radix Sort':
         num_digits = math.ceil(math.log(CANVAS_HEIGHT, 10))
         count_sort = [[] for i in range(10)]
